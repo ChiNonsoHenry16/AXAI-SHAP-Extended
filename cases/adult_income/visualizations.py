@@ -15,6 +15,9 @@ def generate_global_importance(
 ):
     """Generate the SHAP global feature importance plot."""
 
+    output_dir = Path(output_dir)
+    output_dir.mkdir(parents=True, exist_ok=True)
+
     plt.figure()
 
     shap.summary_plot(
@@ -27,7 +30,7 @@ def generate_global_importance(
     plt.title("SHAP Global Feature Importance")
     plt.tight_layout()
 
-    output_path = Path(output_dir) / "shap_global_importance.png"
+    output_path = output_dir / "shap_global_importance.png"
 
     plt.savefig(
         output_path,
@@ -47,6 +50,9 @@ def generate_beeswarm(
 ):
     """Generate the SHAP beeswarm plot."""
 
+    output_dir = Path(output_dir)
+    output_dir.mkdir(parents=True, exist_ok=True)
+
     plt.figure()
 
     shap.summary_plot(
@@ -58,7 +64,7 @@ def generate_beeswarm(
     plt.title("SHAP Feature Impact Summary")
     plt.tight_layout()
 
-    output_path = Path(output_dir) / "shap_beeswarm.png"
+    output_path = output_dir / "shap_beeswarm.png"
 
     plt.savefig(
         output_path,
@@ -73,13 +79,13 @@ def generate_beeswarm(
 
 def generate_waterfall(
     explainer,
-    X_test,
-    output_dir,
-    sample_index=0
+    sample,
+    output_dir
 ):
-    """Generate a local SHAP waterfall plot."""
+    """Generate a local SHAP waterfall plot for an observation."""
 
-    sample = X_test.iloc[[sample_index]]
+    output_dir = Path(output_dir)
+    output_dir.mkdir(parents=True, exist_ok=True)
 
     sample_explanation = explainer(sample)
 
@@ -92,7 +98,7 @@ def generate_waterfall(
 
     plt.tight_layout()
 
-    output_path = Path(output_dir) / "shap_waterfall.png"
+    output_path = output_dir / "shap_waterfall.png"
 
     plt.savefig(
         output_path,
@@ -112,6 +118,9 @@ def generate_dependence(
 ):
     """Generate the Education-Num SHAP dependence plot."""
 
+    output_dir = Path(output_dir)
+    output_dir.mkdir(parents=True, exist_ok=True)
+
     plt.figure()
 
     shap.dependence_plot(
@@ -124,9 +133,7 @@ def generate_dependence(
     plt.title("SHAP Dependence Plot: Education-Num")
     plt.tight_layout()
 
-    output_path = (
-        Path(output_dir) / "shap_dependence_education.png"
-    )
+    output_path = output_dir / "shap_dependence_education.png"
 
     plt.savefig(
         output_path,
@@ -144,12 +151,20 @@ def generate_all_visualizations(
     explainer,
     X_test,
     output_dir,
-    sample_index=0
+    sample=None
 ):
-    """Generate all four original SHAP visualisations."""
+    """
+    Generate global SHAP plots and a local waterfall explanation.
+
+    If no sample is supplied, the first test observation is used
+    for the initial waterfall plot during application startup.
+    """
 
     output_dir = Path(output_dir)
     output_dir.mkdir(parents=True, exist_ok=True)
+
+    if sample is None:
+        sample = X_test.iloc[[0]]
 
     print("Generating SHAP values...")
 
@@ -175,9 +190,8 @@ def generate_all_visualizations(
 
     waterfall = generate_waterfall(
         explainer,
-        X_test,
-        output_dir,
-        sample_index
+        sample,
+        output_dir
     )
 
     print("Generating Education-Num dependence plot...")

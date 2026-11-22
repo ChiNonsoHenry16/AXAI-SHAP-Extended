@@ -1,0 +1,115 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prediction Results | AXAI-SHAP Extended</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+<header class="site-header">
+    <div class="container">
+        <h1>Adult Income Prediction Results</h1>
+        <p>Prediction and SHAP explanations</p>
+    </div>
+</header>
+
+<main class="container">
+
+    <section class="intro">
+        <h2>Classification Result</h2>
+
+        {% if explanation.prediction == 1 %}
+            <h3>Predicted income: Above $50K</h3>
+        {% else %}
+            <h3>Predicted income: $50K or below</h3>
+        {% endif %}
+
+        <p>
+            Probability of income above $50K:
+            <strong>{{ "%.2f"|format(explanation.probability * 100) }}%</strong>
+        </p>
+
+        <p>
+            <a href="{{ url_for('adult_income') }}">Make another prediction</a>
+            |
+            <a href="{{ url_for('index') }}">Back to case studies</a>
+        </p>
+    </section>
+
+    <section class="case-card">
+        <h2>Individual SHAP Feature Contributions</h2>
+
+        <p>
+            The following values show how individual features influence
+            the model's prediction.
+        </p>
+
+        <table>
+            <thead>
+                <tr>
+                    <th scope="col">Feature</th>
+                    <th scope="col">SHAP Value</th>
+                    <th scope="col">Effect</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in explanation.shap_values %}
+                <tr>
+                    <td>{{ item.feature }}</td>
+                    <td>{{ "%.6f"|format(item.shap_value) }}</td>
+                    <td>{{ item.effect }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </section>
+
+    <section class="case-card shap-section">
+        <h2>SHAP Waterfall Plot</h2>
+        <p>Feature contributions for the submitted observation.</p>
+        <img
+            src="{{ url_for('static', filename='generated/adult_income/shap_waterfall.png') }}"
+            class="shap-visualization"
+        >
+    </section>
+
+    <section class="case-card shap-section">
+        <h2>Global SHAP Feature Importance</h2>
+        <p>Overall feature importance across the test dataset.</p>
+        <img
+            src="{{ url_for('static', filename='generated/adult_income/shap_global_importance.png') }}"
+            class="shap-visualization"
+        >
+    </section>
+
+    <section class="case-card shap-section">
+        <h2>SHAP Beeswarm Plot</h2>
+        <p>Distribution and direction of feature contributions.</p>
+        <img
+            src="{{ url_for('static', filename='generated/adult_income/shap_beeswarm.png') }}"
+            class="shap-visualization"
+        >
+    </section>
+
+    <section class="case-card shap-section">
+        <h2>SHAP Dependence Plot: Education-Num</h2>
+        <p>Relationship between education and SHAP contribution.</p>
+        <img
+            src="{{ url_for('static', filename='generated/adult_income/shap_dependence_education.png') }}"
+            class="shap-visualization"
+        >
+    </section>
+
+</main>
+
+<footer class="site-footer">
+    <div class="container">
+        <p>AXAI-SHAP Extended</p>
+    </div>
+</footer>
+
+</body>
+</html>

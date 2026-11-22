@@ -1,0 +1,146 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adult Income Classification | AXAI-SHAP Extended</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+<header class="site-header">
+    <div class="container">
+        <h1>Adult Income Classification</h1>
+        <p>Explore predictions and SHAP explanations</p>
+    </div>
+</header>
+
+<main class="container">
+    <section class="intro">
+        <h2>Enter Individual Characteristics</h2>
+        <p>
+            Provide the following information to generate an income
+            classification prediction and its SHAP explanations.
+        </p>
+        <p><a href="{{ url_for('index') }}">Back to case studies</a></p>
+    </section>
+
+    {% if error %}
+        <p role="alert">{{ error }}</p>
+    {% endif %}
+
+    <form action="{{ url_for('adult_income_predict') }}" method="POST">
+
+        <div class="form-grid">
+
+            <div class="form-group">
+                <label for="Age">Age</label>
+                <input type="number" id="Age" name="Age"
+                       min="17" max="90" step="1" required>
+            </div>
+
+            <div class="form-group">
+                <label for="Workclass">Workclass</label>
+                <select id="Workclass" name="Workclass" required>
+                    {% for value in options["Workclass"] %}
+                        <option value="{{ value }}">{{ value }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="Education-Num">Education-Num</label>
+                <input type="number" id="Education-Num"
+                       name="Education-Num" min="1" max="16"
+                       step="1" required>
+            </div>
+
+            <div class="form-group">
+                <label for="Marital Status">Marital Status</label>
+                <select id="Marital Status" name="Marital Status" required>
+                    {% for value in options["Marital Status"] %}
+                        <option value="{{ value }}">{{ value }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="Occupation">Occupation</label>
+                <select id="Occupation" name="Occupation" required>
+                    {% for value in options["Occupation"] %}
+                        <option value="{{ value }}">{{ value }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="Relationship">Relationship</label>
+                <select id="Relationship" name="Relationship" required>
+                    {% for value in options["Relationship"] %}
+                        <option value="{{ value }}">{{ value }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="Race">Race</label>
+                <select id="Race" name="Race" required>
+                    {% for value in options["Race"] %}
+                        <option value="{{ value }}">{{ value }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="Sex">Sex</label>
+                <select id="Sex" name="Sex" required>
+                    {% for value in options["Sex"] %}
+                        <option value="{{ value }}">{{ value }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="Capital Gain">Capital Gain</label>
+                <input type="number" id="Capital Gain"
+                       name="Capital Gain" min="0" step="1" required>
+            </div>
+
+            <div class="form-group">
+                <label for="Capital Loss">Capital Loss</label>
+                <input type="number" id="Capital Loss"
+                       name="Capital Loss" min="0" step="1" required>
+            </div>
+
+            <div class="form-group">
+                <label for="Hours per week">Hours per week</label>
+                <input type="number" id="Hours per week"
+                       name="Hours per week" min="1" max="99"
+                       step="1" required>
+            </div>
+
+            <div class="form-group">
+                <label for="Country">Country</label>
+                <select id="Country" name="Country" required>
+                    {% for value in options["Country"] %}
+                        <option value="{{ value }}">{{ value }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+        </div>
+
+        <button type="submit">Generate Prediction and SHAP Explanations</button>
+
+    </form>
+</main>
+
+<footer class="site-footer">
+    <div class="container">
+        <p>AXAI-SHAP Extended</p>
+    </div>
+</footer>
+
+</body>
+</html>

@@ -89,3 +89,26 @@ body {
         margin-bottom: 0;
     }
 }
+
+
+/* SHAP visualisation display */
+.shap-visualization {
+    display: block;
+    width: 100%;
+    max-width: 850px;
+    height: auto;
+    margin: 20px auto;
+    object-fit: contain;
+}
+
+/* SHAP visualisation section */
+.shap-section {
+    width: 100%;
+    margin: 30px 0;
+    overflow: hidden;
+}
+
+.shap-section h3 {
+    margin-bottom: 12px;
+    color: #263746;
+}
