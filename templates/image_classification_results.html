@@ -1,0 +1,64 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ImageNet SHAP Explanation | AXAI-SHAP Extended</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+    <main class="container">
+        <h1>ImageNet Classification Results</h1>
+
+        <section class="prediction-section">
+            <h2>Classification Prediction</h2>
+
+            <p>
+                <strong>Selected sample:</strong>
+                ImageNet Sample {{ sample_number }}
+            </p>
+
+            <p>
+                <strong>Predicted class:</strong>
+                {{ prediction_label }}
+            </p>
+        </section>
+
+        <section class="image-section">
+            <h2>Original Image</h2>
+
+            <img
+                src="{{ url_for('static', filename=original_image) }}"
+                class="shap-visualization"
+            >
+        </section>
+
+        <section class="shap-section">
+            <h2>SHAP Image Explanation</h2>
+
+            <p>
+                The following visualisation shows the SHAP explanation
+                generated for the selected ImageNet sample.
+            </p>
+
+            <img
+                src="{{ url_for('static', filename=shap_image) }}"
+                class="shap-visualization"
+            >
+        </section>
+
+        <p>
+            <a href="{{ url_for('image_classification') }}">
+                Analyse another ImageNet sample
+            </a>
+        </p>
+
+        <p>
+            <a href="{{ url_for('index') }}">Return to homepage</a>
+        </p>
+    </main>
+
+</body>
+</html>

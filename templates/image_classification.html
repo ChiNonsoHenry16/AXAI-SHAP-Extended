@@ -1,0 +1,49 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ImageNet Image Classification | AXAI-SHAP Extended</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+    <main class="container">
+        <h1>ImageNet Image Classification</h1>
+
+        <p>
+            Select an image from the SHAP ImageNet sample dataset
+            to generate an image classification prediction and
+            its corresponding SHAP explanation.
+        </p>
+
+        {% if error %}
+            <p class="error">{{ error }}</p>
+        {% endif %}
+
+        <form action="{{ url_for('image_classification_explain') }}" method="POST">
+
+            <div class="form-group">
+                <label for="sample_number">Select ImageNet sample</label>
+
+                <select id="sample_number" name="sample_number" required>
+                    {% for number in sample_numbers %}
+                        <option value="{{ number }}">
+                            Sample {{ number }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <button type="submit">Generate SHAP Explanation</button>
+
+        </form>
+
+        <p>
+            <a href="{{ url_for('index') }}">Return to homepage</a>
+        </p>
+    </main>
+
+</body>
+</html>
