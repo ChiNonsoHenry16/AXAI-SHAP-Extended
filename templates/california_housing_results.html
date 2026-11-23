@@ -1,0 +1,155 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>California Housing Results | AXAI-SHAP Extended</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+<header class="site-header">
+    <div class="container">
+        <h1>California Housing Prediction Results</h1>
+        <p>Regression prediction and SHAP explanations</p>
+    </div>
+</header>
+
+<main class="container">
+
+    <section class="intro">
+        <h2>Regression Result</h2>
+
+        <h3>
+            Predicted Median House Value:
+            ${{ "{:,.2f}".format(explanation.predicted_value_usd) }}
+        </h3>
+
+        <p>
+            Model prediction:
+            <strong>
+                {{ "%.4f"|format(explanation.predicted_value) }}
+            </strong>
+            (units of $100,000)
+        </p>
+
+        <p>
+            <a href="{{ url_for('california_housing') }}">
+                Make another prediction
+            </a>
+            |
+            <a href="{{ url_for('index') }}">
+                Back to case studies
+            </a>
+        </p>
+    </section>
+
+    <section class="case-card">
+        <h2>Model Evaluation Metrics</h2>
+
+        <p>
+            The following metrics represent the model's performance
+            on the held-out test dataset.
+        </p>
+
+        <table>
+            <thead>
+                <tr>
+                    <th scope="col">Metric</th>
+                    <th scope="col">Value</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Mean Absolute Error (MAE)</td>
+                    <td>{{ "%.4f"|format(metrics.MAE) }}</td>
+                </tr>
+                <tr>
+                    <td>Root Mean Squared Error (RMSE)</td>
+                    <td>{{ "%.4f"|format(metrics.RMSE) }}</td>
+                </tr>
+                <tr>
+                    <td>R² Score</td>
+                    <td>{{ "%.4f"|format(metrics.R2) }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+
+    <section class="case-card">
+        <h2>Individual SHAP Feature Contributions</h2>
+
+        <p>
+            The following values show how individual housing features
+            influence the model's predicted house value.
+        </p>
+
+        <table>
+            <thead>
+                <tr>
+                    <th scope="col">Feature</th>
+                    <th scope="col">SHAP Value</th>
+                    <th scope="col">Effect</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in explanation.shap_values %}
+                <tr>
+                    <td>{{ item.feature }}</td>
+                    <td>{{ "%.6f"|format(item.shap_value) }}</td>
+                    <td>{{ item.effect }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </section>
+
+    <section class="case-card shap-section">
+        <h2>SHAP Waterfall Plot</h2>
+        <p>Individual feature contributions for the submitted observation.</p>
+        <img
+            src="{{ url_for('static', filename='generated/california_housing/shap_waterfall.png') }}"
+            class="shap-visualization"
+        >
+    </section>
+
+    <section class="case-card shap-section">
+        <h2>Global SHAP Feature Importance</h2>
+        <p>Overall feature importance across the test dataset.</p>
+        <img
+            src="{{ url_for('static', filename='generated/california_housing/shap_global_importance.png') }}"
+            class="shap-visualization"
+        >
+    </section>
+
+    <section class="case-card shap-section">
+        <h2>SHAP Beeswarm Plot</h2>
+        <p>Distribution and direction of feature contributions.</p>
+        <img
+            src="{{ url_for('static', filename='generated/california_housing/shap_beeswarm.png') }}"
+            class="shap-visualization"
+        >
+    </section>
+
+    <section class="case-card shap-section">
+        <h2>SHAP Dependence Plot: MedInc</h2>
+        <p>
+            Relationship between median income and its SHAP contribution.
+        </p>
+        <img
+            src="{{ url_for('static', filename='generated/california_housing/shap_dependence_medinc.png') }}"
+            class="shap-visualization"
+        >
+    </section>
+
+</main>
+
+<footer class="site-footer">
+    <div class="container">
+        <p>AXAI-SHAP Extended</p>
+    </div>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,196 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>California Housing Prediction | AXAI-SHAP Extended</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+<header class="site-header">
+    <div class="container">
+        <h1>California Housing Regression</h1>
+        <p>Housing value prediction and SHAP explanations</p>
+    </div>
+</header>
+
+<main class="container">
+
+    <section class="intro">
+        <h2>Predict California Housing Values</h2>
+        <p>
+            Enter the eight housing and geographical features below
+            to generate a predicted median house value and its SHAP explanation.
+        </p>
+        <p>
+            The predicted value is expressed in US dollars.
+        </p>
+    </section>
+
+    <section class="case-card">
+
+        <h2>Housing Features</h2>
+
+        {% if error %}
+            <p class="error-message" role="alert">
+                {{ error }}
+            </p>
+        {% endif %}
+
+        <form
+            action="{{ url_for('california_housing_predict') }}"
+            method="POST"
+        >
+
+            <div class="form-grid">
+
+                <div class="form-group">
+                    <label for="MedInc">
+                        Median Income (MedInc)
+                    </label>
+                    <input
+                        type="number"
+                        id="MedInc"
+                        name="MedInc"
+                        step="any"
+                        min="0"
+                        max="20"
+                        required
+                    >
+                    <small>Median income in tens of thousands of US dollars.</small>
+                </div>
+
+                <div class="form-group">
+                    <label for="HouseAge">
+                        House Age (HouseAge)
+                    </label>
+                    <input
+                        type="number"
+                        id="HouseAge"
+                        name="HouseAge"
+                        step="any"
+                        min="0"
+                        max="60"
+                        required
+                    >
+                    <small>Median house age in years.</small>
+                </div>
+
+                <div class="form-group">
+                    <label for="AveRooms">
+                        Average Rooms (AveRooms)
+                    </label>
+                    <input
+                        type="number"
+                        id="AveRooms"
+                        name="AveRooms"
+                        step="any"
+                        min="0"
+                        required
+                    >
+                    <small>Average number of rooms per household.</small>
+                </div>
+
+                <div class="form-group">
+                    <label for="AveBedrms">
+                        Average Bedrooms (AveBedrms)
+                    </label>
+                    <input
+                        type="number"
+                        id="AveBedrms"
+                        name="AveBedrms"
+                        step="any"
+                        min="0"
+                        required
+                    >
+                    <small>Average number of bedrooms per household.</small>
+                </div>
+
+                <div class="form-group">
+                    <label for="Population">
+                        Population
+                    </label>
+                    <input
+                        type="number"
+                        id="Population"
+                        name="Population"
+                        step="any"
+                        min="0"
+                        required
+                    >
+                    <small>Total population of the block group.</small>
+                </div>
+
+                <div class="form-group">
+                    <label for="AveOccup">
+                        Average Occupancy (AveOccup)
+                    </label>
+                    <input
+                        type="number"
+                        id="AveOccup"
+                        name="AveOccup"
+                        step="any"
+                        min="0"
+                        required
+                    >
+                    <small>Average number of household members.</small>
+                </div>
+
+                <div class="form-group">
+                    <label for="Latitude">
+                        Latitude
+                    </label>
+                    <input
+                        type="number"
+                        id="Latitude"
+                        name="Latitude"
+                        step="any"
+                        min="32"
+                        max="42"
+                        required
+                    >
+                    <small>Geographical latitude of the block group.</small>
+                </div>
+
+                <div class="form-group">
+                    <label for="Longitude">
+                        Longitude
+                    </label>
+                    <input
+                        type="number"
+                        id="Longitude"
+                        name="Longitude"
+                        step="any"
+                        min="-125"
+                        max="-114"
+                        required
+                    >
+                    <small>Geographical longitude of the block group.</small>
+                </div>
+
+            </div>
+
+            <button type="submit">
+                Generate Prediction and SHAP Explanations
+            </button>
+
+        </form>
+
+    </section>
+
+    <p>
+        <a href="{{ url_for('index') }}">Back to case studies</a>
+    </p>
+
+</main>
+
+<footer class="site-footer">
+    <div class="container">
+        <p>AXAI-SHAP Extended</p>
+    </div>
+</footer>
+
+</body>
+</html>
